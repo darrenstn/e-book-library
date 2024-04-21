@@ -30,7 +30,9 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.border.EmptyBorder;
 import models.Admin;
 import models.Book;
@@ -201,11 +203,12 @@ public class Home extends JFrame{
             }
         });
         searchSectionPanel.add(searchBtn);
-        
-        this.add(booksSectionPanel);
+        JScrollPane scroll = new JScrollPane(booksSectionPanel);
+        scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+        this.add(scroll);
         this.setJMenuBar(menuBar);
         this.setTitle(frameTitle.getText());
-        this.setSize(1100, 800);
+        this.setSize(1200, 800);
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         this.setVisible(true);
     }
