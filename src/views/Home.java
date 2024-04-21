@@ -32,6 +32,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
+import models.Admin;
 import models.Book;
 import models.enums.Category;
 import models.enums.Genre;
@@ -71,6 +72,18 @@ public class Home extends JFrame{
                 }
             });
             menuBar.add(menuLogout);
+            if(SingletonManager.getInstance().getPerson() instanceof Admin) {
+                JMenu menuManageUser = new JMenu();
+                menuManageUser.setText("Manage User");
+                menuManageUser.addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+                        new ManageUser();
+                        Home.this.dispose();
+                    }
+                });
+                menuBar.add(menuManageUser);
+            }
         }
         JPanel booksSectionPanel = new JPanel();
         booksSectionPanel.setLayout(new GridBagLayout());
