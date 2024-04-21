@@ -4,11 +4,13 @@
  */
 package controllers;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import models.Admin;
+import models.Book;
 import models.Person;
 import models.User;
 
@@ -35,6 +37,7 @@ public class AdminController {
     }
     
     public boolean increaseWarning(int idUser) {
+        if (!(SingletonManager.getInstance().getPerson() instanceof Admin)) {return false;}
         DatabaseHandler.getInstance().connect();
         String query = "SELECT warning FROM user WHERE id=" + idUser + ";";
         try {
@@ -56,6 +59,7 @@ public class AdminController {
     }
     
     public boolean decreaseWarning(int idUser) {
+        if (!(SingletonManager.getInstance().getPerson() instanceof Admin)) {return false;}
         DatabaseHandler.getInstance().connect();
         String query = "SELECT warning FROM user WHERE id=" + idUser + ";";
         try {
@@ -72,6 +76,28 @@ public class AdminController {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+        return false;
+    }
+    
+    public boolean addBook(Book book) {
+        if (!(SingletonManager.getInstance().getPerson() instanceof Admin)) {return false;}
+        DatabaseHandler.getInstance().connect();
+        String query = "INSERT INTO book (isbn, year, title, genre, category, author, stock, pic_path) VALUES(?,?,?,?,?,?,?,?)";
+        try {
+            PreparedStatement stmt =  DatabaseHandler.getInstance().con.prepareStatement(query);
+            stmt.setString(1, book.getIsbn());
+            stmt.setInt(2, book.getYear());
+            stmt.setString(3, book.getTitle());
+            stmt.setString(4, book.getGenre().toString());
+            stmt.setString(5, book.getCategory().toString());
+            stmt.setString(6, book.getAuthor());
+            stmt.setInt(7, book.getStock());
+            stmt.setString(8, book.getPicPath());
+            stmt.executeUpdate();
+            return true;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
         }
         return false;
     }

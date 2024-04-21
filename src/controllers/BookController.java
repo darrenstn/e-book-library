@@ -122,6 +122,20 @@ public class BookController {
         }
         return result;
     }
+    
+    //Method getBorrowedBook, mencari satu buku yang sedang dipinjam oleh user
+    public BorrowedBook getBorrowedBook (Book book, User user) {
+        ArrayList<Book> listBorrow = getListBorrow(user);
+        BorrowedBook result = null;
+        
+        for(Book bookTmpL : listBorrow) {
+            if(bookTmpL.getIsbn().equals(book.getIsbn())) {
+                result = ((BorrowedBook)bookTmpL);
+            }
+        }
+        return result;
+    }
+    
     //Method getListBorrow dengan parameter user, mengembalikan buku(BorrowedBook) yang sedang dipinjam oleh user
     public ArrayList<Book> getListBorrow (User user) {
         updateListBorrow();
@@ -229,6 +243,23 @@ public class BookController {
         }
         return false;
     }
+    
+    public boolean checkIfBookCurrentlyBorrowed (Book book, User user) {
+        updateListBorrow();
+        DatabaseHandler.getInstance().connect();
+        String querySelect = "SELECT id_user FROM listborrow WHERE isbn='"+ book.getIsbn() +"' AND date_return IS NULL AND id_user = " + user.getId() + ";";
+        
+        try {
+            Statement stmt = DatabaseHandler.getInstance().con.createStatement();
+            ResultSet rsSelect = stmt.executeQuery(querySelect);
+            
+            return rsSelect.next();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+    
     //Method untuk meminjam buku, dilakukan ableToBorrow(), jika bisa maka langsung insert data ke database
     public boolean borrowBook (Book book, User user) {
         if (!ableToBorrow(book, user)) {return false;}
@@ -250,6 +281,7 @@ public class BookController {
     //Method untuk mengantri jika diluar method ini dilakukan pengecekan ableToBorrow dan hasilnya false, maka tampilkan tombol mengantri dan isinya memanggil method ini
     public boolean addBookQueue (Book book, User user) {
         if (ableToBorrow(book, user)) {return false;}
+        if (!ableToQueue(book, user)) {return false;}
         DatabaseHandler.getInstance().connect();
         String query = "INSERT INTO bookqueue (isbn, id_user, date) VALUES(?,?,?)";
         try {
@@ -264,6 +296,29 @@ public class BookController {
             return (false);
         }
     }
+    
+    public boolean ableToQueue (Book book, User user) {
+        updateListBorrow();
+        DatabaseHandler.getInstance().connect();
+        String querySelect = "SELECT id_list_borrow FROM listborrow WHERE isbn='"+ book.getIsbn() +"' AND date_return IS NULL AND id_user = " + user.getId() + ";";
+        
+        try {
+            Statement stmt = DatabaseHandler.getInstance().con.createStatement();
+            ResultSet rsSelect = stmt.executeQuery(querySelect);
+            if(!rsSelect.next()) {
+                String querySelect2 = "SELECT id_user FROM bookqueue WHERE isbn='" + book.getIsbn() + "' AND id_user = " + user.getId() + ";";
+                Statement stmt2 = DatabaseHandler.getInstance().con.createStatement();
+                ResultSet rsSelect2 = stmt2.executeQuery(querySelect2);
+                if(!rsSelect2.next()) {
+                    return true;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+    
     //Method getBookHistory mendapatkan seluruh riwayat peminjaman buku
     public ArrayList<History> getBookHistory (Book book) {
         updateListBorrow();

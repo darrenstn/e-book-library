@@ -17,7 +17,7 @@ import models.User;
 public class Register {
     
     public boolean registerNewUser(User user) {
-        if(checkName(user.getName())) { return false; }
+        if(checkIfNameAvailable(user.getName())) { return false; }
         
         DatabaseHandler.getInstance().connect();
         String query = "INSERT INTO person (password, name, email, phone, pic_path) VALUES(?,?,?,?,?)";
@@ -53,7 +53,7 @@ public class Register {
         }
     }
     
-    public boolean checkName(String name){
+    public boolean checkIfNameAvailable(String name){
         DatabaseHandler.getInstance().connect();
         String query = "SELECT name FROM person WHERE name='" + name + "'";
         try {
