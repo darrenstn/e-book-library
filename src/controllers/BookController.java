@@ -26,6 +26,38 @@ import models.User;
  * @author Darren
  */
 public class BookController {
+    public ArrayList<Book> getAllBooks(){
+        updateListBorrow();
+        DatabaseHandler.getInstance().connect();
+        ArrayList<Book> result = new ArrayList<>();
+        
+        String query = "SELECT * FROM book";
+
+        try {
+            Statement stmt = DatabaseHandler.getInstance().con.createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+            while (rs.next()) {
+                Genre genreTmp = Genre.ACTION;
+                for(Genre genreLoop : Genre.values()) {
+                    if(genreLoop.toString().equals(rs.getString("genre"))) {
+                        genreTmp = genreLoop;
+                    }
+                }
+                
+                Category categoryTmp = Category.FICTION;
+                for(Category categoryLoop : Category.values()) {
+                    if(categoryLoop.toString().equals(rs.getString("category"))) {
+                        categoryTmp = categoryLoop;
+                    }
+                }
+                result.add(new Book(rs.getString("isbn"), rs.getInt("year"), rs.getString("title"), genreTmp, categoryTmp, rs.getString("author"), rs.getInt("stock"), rs.getString("pic_path")));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+    
     //Method searchBook berdasarkan tipe(dari enum), search merupakan value dari enum(hanya bisa satu), dan user bisa diisi null atau jika diambil dari user yang login(bisa ambil dari singleton manager) maka akan mencari buku yang saat ini tidak dipinjam
     public ArrayList<Book> searchBook(SearchType type, String search, User user){
         updateListBorrow();

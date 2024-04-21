@@ -74,7 +74,7 @@ public class Home extends JFrame{
             menuBar.add(menuLogout);
             if(SingletonManager.getInstance().getPerson() instanceof Admin) {
                 JMenu menuManageUser = new JMenu();
-                menuManageUser.setText("Manage User");
+                menuManageUser.setText("Manage Users");
                 menuManageUser.addMouseListener(new MouseAdapter() {
                     @Override
                     public void mouseClicked(MouseEvent e) {
@@ -83,6 +83,17 @@ public class Home extends JFrame{
                     }
                 });
                 menuBar.add(menuManageUser);
+                
+                JMenu menuManageBook = new JMenu();
+                menuManageBook.setText("Manage Books");
+                menuManageBook.addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+                        new ManageBook();
+                        Home.this.dispose();
+                    }
+                });
+                menuBar.add(menuManageBook);
             }
         }
         JPanel booksSectionPanel = new JPanel();

@@ -4,17 +4,13 @@
  */
 package views;
 
-import controllers.Access;
 import controllers.AdminController;
-import controllers.BookController;
 import controllers.SingletonManager;
-import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
@@ -28,7 +24,7 @@ import models.User;
  * @author Darren
  */
 public class ManageUser extends JFrame{
-    JTextField frameTitle = new JTextField("Home");
+    JTextField frameTitle = new JTextField("Manage Users");
     AdminController adminController = new AdminController();
     public ManageUser(){
         this.setLayout(new GridLayout(0,1,2,2));
