@@ -7,6 +7,7 @@ package views;
 import controllers.Access;
 import controllers.BookController;
 import controllers.SingletonManager;
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -15,18 +16,26 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import models.Book;
+import models.enums.Category;
+import models.enums.Genre;
+import models.enums.SearchType;
 
 /**
  *
@@ -63,8 +72,8 @@ public class Home extends JFrame{
             });
             menuBar.add(menuLogout);
         }
-        JPanel popularBooksSectionPanel = new JPanel();
-        popularBooksSectionPanel.setLayout(new GridBagLayout());
+        JPanel booksSectionPanel = new JPanel();
+        booksSectionPanel.setLayout(new GridBagLayout());
         
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = 0;
@@ -72,14 +81,32 @@ public class Home extends JFrame{
         gbc.insets = new Insets(2, 2, 2, 2); // Adjust the insets to minimize the gap
         gbc.anchor = GridBagConstraints.CENTER;
         
-        JLabel labelPopularBooks = new JLabel("Popular Now");  
-        labelPopularBooks.setFont(new java.awt.Font("Bookman Old Style", 1, 36));
-        popularBooksSectionPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
-        popularBooksSectionPanel.add(labelPopularBooks, gbc);
+        JPanel searchSectionPanel = new JPanel();
+        booksSectionPanel.add(searchSectionPanel);
+        String[] cbArr = new String[Category.values().length+Genre.values().length+1];
+        cbArr[0] = "Popular";
+        int index = 1;
+        for (Category categoryTmp : Category.values()) {
+            cbArr[index++] = categoryTmp.name();
+        }
+        for (Genre genreTmp : Genre.values()) {
+            cbArr[index++] = genreTmp.name();
+        }
+        JLabel searchLabel = new JLabel("Filter : ");
+        JComboBox cbSearch =new JComboBox(cbArr); 
+        
+        searchSectionPanel.add(searchLabel);
+        searchSectionPanel.add(cbSearch);
+        
+        JLabel labelBooks = new JLabel("Popular Now");  
+        labelBooks.setFont(new java.awt.Font("Bookman Old Style", 1, 36));
+        booksSectionPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
+        gbc.gridy++;
+        booksSectionPanel.add(labelBooks, gbc);
 
-        JPanel popularBooksPanel = new JPanel();
-        popularBooksPanel.setLayout(new GridLayout(0,5,10,10));
-        popularBooksPanel.setBorder(new EmptyBorder(30, 10, 10, 10));
+        JPanel booksPanel = new JPanel();
+        booksPanel.setLayout(new GridLayout(0,5,10,10));
+        booksPanel.setBorder(new EmptyBorder(30, 10, 10, 10));
         ArrayList<Book> popularBooks = bookController.getPopularBook();
         
         for(Book bookTmp : popularBooks){
@@ -91,12 +118,67 @@ public class Home extends JFrame{
                     new ShowBookDetail(bookController.searchBook(bookTmp.getIsbn()));
                 }
             });
-            popularBooksPanel.add(imgIcon);
+            booksPanel.add(imgIcon);
         }
         gbc.gridy++;
-        popularBooksSectionPanel.add(popularBooksPanel, gbc);
+        booksSectionPanel.add(booksPanel, gbc);
+        JButton searchBtn = new JButton("Search");
+        searchBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                SearchType stTmp = null;
+                String search = null;
+
+                for (Category cTmp : Category.values()) {
+                    if(cbSearch.getSelectedItem().toString().equals(cTmp.name())) {
+                        search = cTmp.name();
+                        stTmp = SearchType.CATEGORY;
+                    }
+                }
+                for (Genre gTmp : Genre.values()) {
+                    if(cbSearch.getSelectedItem().toString().equals(gTmp.name())) {
+                        search = gTmp.name();
+                        stTmp = SearchType.GENRE;
+                    }
+                }
+                if(stTmp!=null){                   
+                    ArrayList<Book> booksResult = bookController.searchBook(stTmp, search, null);
+                    labelBooks.setText("Search Result");
+                    booksPanel.removeAll();
+                    for(Book bookTmp : booksResult){
+                        JLabel imgIcon = new JLabel(new ImageIcon(new ImageIcon(bookTmp.getPicPath()).getImage().getScaledInstance(200,300, Image.SCALE_DEFAULT)));
+                        imgIcon.addMouseListener(new MouseAdapter() {
+                            @Override
+                            public void mouseClicked(MouseEvent e) {
+                                System.out.println("Mouse clicked (# of clicks: " + e.getClickCount() + ")" + e);
+                                new ShowBookDetail(bookController.searchBook(bookTmp.getIsbn()));
+                            }
+                        });
+                        booksPanel.add(imgIcon);
+                    }
+                    booksPanel.revalidate();
+                } else {
+                    ArrayList<Book> popularBooks = bookController.getPopularBook();       
+                    labelBooks.setText("Popular Now");
+                    booksPanel.removeAll();
+                    for(Book bookTmp : popularBooks){
+                        JLabel imgIcon = new JLabel(new ImageIcon(new ImageIcon(bookTmp.getPicPath()).getImage().getScaledInstance(200,300, Image.SCALE_DEFAULT)));
+                        imgIcon.addMouseListener(new MouseAdapter() {
+                            @Override
+                            public void mouseClicked(MouseEvent e) {
+                                System.out.println("Mouse clicked (# of clicks: " + e.getClickCount() + ")" + e);
+                                new ShowBookDetail(bookController.searchBook(bookTmp.getIsbn()));
+                            }
+                        });
+                        booksPanel.add(imgIcon);
+                    }
+                    booksPanel.revalidate();
+                }
+            }
+        });
+        searchSectionPanel.add(searchBtn);
         
-        this.add(popularBooksSectionPanel);
+        this.add(booksSectionPanel);
         this.setJMenuBar(menuBar);
         this.setTitle(frameTitle.getText());
         this.setSize(1100, 800);
