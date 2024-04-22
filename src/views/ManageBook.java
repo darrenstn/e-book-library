@@ -46,6 +46,11 @@ JTextField frameTitle = new JTextField("Manage Books");
             scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
             this.add(scroll);
         }
+        JButton addBookBtn = new JButton("Add Book");
+        addBookBtn.addActionListener(e -> {
+            new AddBook();
+        });
+        this.add(addBookBtn);
         JButton homeBtn = new JButton("Back to Home");
         homeBtn.addActionListener(e -> {
             new Home();

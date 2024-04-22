@@ -410,8 +410,8 @@ public class BookController {
         }
         return result;
     }
-    //Method checkUserReviewBorrowedBook untuk melakukan pengecekan apakah user bisa memberi review, pengecekan pernah pinjam dan pernah review atau tidak
-    public boolean checkUserReviewBorrowedBook(User user, String isbn) {
+    //Method checkUnableToReview untuk melakukan pengecekan apakah user bisa memberi review, pengecekan pernah pinjam dan pernah review atau tidak
+    public boolean checkUnableToReview(User user, String isbn) {
         updateListBorrow();
         DatabaseHandler.getInstance().connect();
         String querySelect = "SELECT id_user FROM listborrow WHERE isbn='"+ isbn +"' AND id_user="+ user.getId() +" AND date_return IS NOT NULL;";
@@ -433,7 +433,7 @@ public class BookController {
     }
     //Method addBookReview untuk menambah review buku
     public boolean addBookReview (Review review, String isbn, User user) {
-        if(checkUserReviewBorrowedBook(user, isbn)){return false;}
+        if(checkUnableToReview(user, isbn)){return false;}
         DatabaseHandler.getInstance().connect();
         
         String query = "INSERT INTO review (id_user, isbn, content, rating, date) VALUES(?,?,?,?,?)";
