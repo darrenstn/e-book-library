@@ -110,61 +110,6 @@ public class ShowBookDetail extends JFrame {
                 } else {
                     if (bc.checkIfBookCurrentlyBorrowed(book, userSession)) {
                         JButton returnBook = new JButton("Return");
-                        JButton addReviewButton = new JButton("Add Review");
-                        bookPanel.add(addReviewButton, gbc);
-
-                        addReviewButton.addActionListener(new ActionListener() {
-                            @Override
-                            public void actionPerformed(ActionEvent e) {
-                                // Periksa apakah pengguna dapat memberikan review
-                                if (!bc.checkUnableToReview(userSession, book.getIsbn())) {
-                                    // Tampilkan dialog untuk menambahkan review
-                                    JPanel reviewPanel = new JPanel();
-                                    reviewPanel.setLayout(new GridLayout(3, 1));
-
-                                    // Area teks untuk konten review
-                                    JTextArea reviewTextArea = new JTextArea(5, 20);
-                                    reviewTextArea.setLineWrap(true);
-                                    JScrollPane scrollPane = new JScrollPane(reviewTextArea);
-                                    reviewPanel.add(scrollPane);
-
-                                    // Pilihan rating
-                                    String[] ratingOptions = {"1", "2", "3", "4", "5"};
-                                    JComboBox<String> ratingComboBox = new JComboBox<>(ratingOptions);
-                                    reviewPanel.add(new JLabel("Rating:"));
-                                    reviewPanel.add(ratingComboBox);
-
-                                    int result = JOptionPane.showConfirmDialog(null, reviewPanel, "Add Review",
-                                            JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
-
-                                    // Jika pengguna menekan tombol "Submit"
-                                    if (result == JOptionPane.OK_OPTION) {
-                                        // Ambil informasi review dari area teks dan pilihan rating
-                                        String reviewContent = reviewTextArea.getText();
-                                        int rating = Integer.parseInt((String) ratingComboBox.getSelectedItem().toString());
-
-                                        // Buat objek Review
-                                        Review review = new Review(userSession.getId(), rating, LocalDate.now(), reviewContent);
-
-                                        // Tambahkan review ke database
-                                        boolean success = bookController.addBookReview(review, book.getIsbn(), userSession);
-
-                                        // Perbarui tampilan jika penambahan review berhasil
-                                        if (success) {
-                                            JOptionPane.showMessageDialog(null, "Review added successfully", "Success", JOptionPane.PLAIN_MESSAGE);
-                                            // Perbarui tampilan detail buku untuk menampilkan review yang baru ditambahkan
-                                            new ShowBookDetail(book);
-                                            dispose();
-                                        } else {
-                                            JOptionPane.showMessageDialog(null, "Failed to add review", "Error", JOptionPane.ERROR_MESSAGE);
-                                        }
-                                    }
-                                } else {
-                                    JOptionPane.showMessageDialog(null, "Anda tidak dapat memberikan review untuk buku ini.", "Error", JOptionPane.ERROR_MESSAGE);
-                                }
-                            }
-                        });
-
                         returnBook.addActionListener(new ActionListener() {
                             @Override
                             public void actionPerformed(ActionEvent e) {
@@ -185,6 +130,61 @@ public class ShowBookDetail extends JFrame {
                         bookPanel.add(status, gbc);
                     }
                 }
+                JButton addReviewButton = new JButton("Add Review");
+                gbc.gridy++;
+                bookPanel.add(addReviewButton, gbc);
+
+                addReviewButton.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        // Periksa apakah pengguna dapat memberikan review
+                        if (!bc.checkUnableToReview(userSession, book.getIsbn())) {
+                            // Tampilkan dialog untuk menambahkan review
+                            JPanel reviewPanel = new JPanel();
+                            reviewPanel.setLayout(new GridLayout(3, 1));
+
+                            // Area teks untuk konten review
+                            JTextArea reviewTextArea = new JTextArea(5, 20);
+                            reviewTextArea.setLineWrap(true);
+                            JScrollPane scrollPane = new JScrollPane(reviewTextArea);
+                            reviewPanel.add(scrollPane);
+
+                            // Pilihan rating
+                            String[] ratingOptions = {"1", "2", "3", "4", "5"};
+                            JComboBox<String> ratingComboBox = new JComboBox<>(ratingOptions);
+                            reviewPanel.add(new JLabel("Rating:"));
+                            reviewPanel.add(ratingComboBox);
+
+                            int result = JOptionPane.showConfirmDialog(null, reviewPanel, "Add Review",
+                                    JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+
+                            // Jika pengguna menekan tombol "Submit"
+                            if (result == JOptionPane.OK_OPTION) {
+                                // Ambil informasi review dari area teks dan pilihan rating
+                                String reviewContent = reviewTextArea.getText();
+                                int rating = Integer.parseInt((String) ratingComboBox.getSelectedItem().toString());
+
+                                // Buat objek Review
+                                Review review = new Review(userSession.getId(), rating, LocalDate.now(), reviewContent);
+
+                                // Tambahkan review ke database
+                                boolean success = bookController.addBookReview(review, book.getIsbn(), userSession);
+
+                                // Perbarui tampilan jika penambahan review berhasil
+                                if (success) {
+                                    JOptionPane.showMessageDialog(null, "Review added successfully", "Success", JOptionPane.PLAIN_MESSAGE);
+                                    // Perbarui tampilan detail buku untuk menampilkan review yang baru ditambahkan
+                                    new ShowBookDetail(book);
+                                    dispose();
+                                } else {
+                                    JOptionPane.showMessageDialog(null, "Failed to add review", "Error", JOptionPane.ERROR_MESSAGE);
+                                }
+                            }
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Anda tidak dapat memberikan review untuk buku ini.", "Error", JOptionPane.ERROR_MESSAGE);
+                        }
+                    }
+                });
             }
         }
 

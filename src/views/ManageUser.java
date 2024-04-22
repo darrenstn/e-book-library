@@ -40,7 +40,7 @@ public class ManageUser extends JFrame{
             
             for(Person personTmp : users) {
                 User userTmp = (User)personTmp;
-                JLabel userLabel = new JLabel("Name : " + personTmp.getName() + " Bio : " + userTmp.getBio() + " Warning : " + userTmp.getWarning());
+                JLabel userLabel = new JLabel("Name : " + personTmp.getName() + ", Bio : " + userTmp.getBio() + ", Warning : " + userTmp.getWarning());
                 JButton increaseBtn = new JButton("Warning++");
                 increaseBtn.addActionListener(e -> {
                     adminController.increaseWarning(userTmp.getId());

@@ -25,7 +25,7 @@ import views.Home;
 
 /**
  *
- * @author Darren
+ * @author marti
  */
 public class Main {
 
