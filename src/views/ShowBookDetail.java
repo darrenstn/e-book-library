@@ -32,13 +32,11 @@ import models.Book;
 import models.Review;
 import models.User;
 
-
-
 public class ShowBookDetail extends JFrame {
-
+    
     private final JTextField fTitle = new JTextField("Book Detail");
     private final BookController bookController = new BookController();
-
+    
     public ShowBookDetail(Book book) {
         JPanel bookPanel = new JPanel();
         bookPanel.setLayout(new GridBagLayout());

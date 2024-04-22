@@ -11,10 +11,7 @@ import models.Admin;
 import models.Person;
 import models.User;
 
-/**
- *
- * @author Darren
- */
+
 public class Access {
     public void login(String name, String password) {
         DatabaseHandler.getInstance().connect();

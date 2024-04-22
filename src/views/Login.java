@@ -17,10 +17,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 
-/**
- *
- * @author Darren
- */
+
 public class Login extends JFrame{
     JTextField fTitle = new JTextField("Login");
     Access accessController = new Access();

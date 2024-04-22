@@ -17,7 +17,6 @@ import models.BorrowedBook;
 import models.enums.Category;
 import models.enums.Genre;
 import models.enums.SearchType;
-import models.History;
 import models.Review;
 import models.User;
 
@@ -351,30 +350,6 @@ public class BookController {
         return false;
     }
     
-    //Method getBookHistory mendapatkan seluruh riwayat peminjaman buku
-    public ArrayList<History> getBookHistory (Book book) {
-        updateListBorrow();
-        DatabaseHandler.getInstance().connect();
-        ArrayList<History> result = new ArrayList<>();
-        
-        String query = "SELECT * FROM listborrow WHERE isbn='" + book.getIsbn() + "'";
-        try {
-            Statement stmt = DatabaseHandler.getInstance().con.createStatement();
-            ResultSet rs = stmt.executeQuery(query);
-            while (rs.next()) {
-                Timestamp dateReturnResult = rs.getTimestamp("date_return");//Necessary to test null
-                LocalDateTime dateReturnResultFinal = null;
-
-                if(!rs.wasNull()) {
-                    dateReturnResultFinal = rs.getTimestamp("date_return").toLocalDateTime();
-                }
-                result.add(new History(rs.getInt("id_user"), rs.getTimestamp("date_borrow").toLocalDateTime(), dateReturnResultFinal));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return result;
-    }
     //Method getBookQueue mendapatkan queue buku
     public ArrayList<BookQueue> getBookQueue (Book book) {
         updateListBorrow();

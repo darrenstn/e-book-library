@@ -186,10 +186,7 @@ public class GUIUserProfile {
         currentUser.setPassword(new String(fieldPassword.getPassword()));
         ((User)currentUser).setBio(fieldBio.getText());
         currentUser.setPicPath(newPicPath);
-        // ImageIcon newIcon = new ImageIcon(newPicPath);
-        // Image newImage = newIcon.getImage().getScaledInstance(150, 150, Image.SCALE_SMOOTH);
-        // imageLabel.setIcon(new ImageIcon(newImage));
-        // Memperbarui profil pengguna
+  
         boolean success = profile.updateProfile(currentUser);
 
         if (success) {

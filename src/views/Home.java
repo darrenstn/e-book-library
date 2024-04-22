@@ -41,10 +41,7 @@ import models.enums.Genre;
 import models.enums.SearchType;
 import models.Person;
 
-/**
- *
- * @author Darren
- */
+
 public class Home extends JFrame{
     JTextField frameTitle = new JTextField("Home");
     Access accessController = new Access();

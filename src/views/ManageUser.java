@@ -19,10 +19,7 @@ import models.Admin;
 import models.Person;
 import models.User;
 
-/**
- *
- * @author Darren
- */
+
 public class ManageUser extends JFrame{
     JTextField frameTitle = new JTextField("Manage Users");
     AdminController adminController = new AdminController();

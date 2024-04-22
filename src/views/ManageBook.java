@@ -19,10 +19,7 @@ import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 import models.Admin;
 import models.Book;
 
-/**
- *
- * @author Darren
- */
+
 public class ManageBook extends JFrame{
 JTextField frameTitle = new JTextField("Manage Books");
     BookController bookController = new BookController();
