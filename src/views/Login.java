@@ -36,6 +36,8 @@ public class Login extends JFrame{
         JLabel labelPassword = new JLabel("Password : ");
         JTextField passwordLogin = new JTextField("");
         JButton login = new JButton("Login");
+        JButton register = new JButton("Register");
+        JButton backToHome = new JButton("Back to Home");
         
         login.addActionListener(new ActionListener() {
             @Override
@@ -52,11 +54,29 @@ public class Login extends JFrame{
             }
         });
         
+        register.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+               new UserRegistrationGUI();
+               Login.this.dispose();
+            }
+        });
+
+        backToHome.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+               new Home();
+               Login.this.dispose();
+            }
+        });
+
         panelLogin.add(labelName);
         panelLogin.add(nameLogin);
         panelLogin.add(labelPassword);
         panelLogin.add(passwordLogin);
         panelLogin.add(login);
+        panelLogin.add(register);
+        panelLogin.add(backToHome);
         
         this.add(panelLogin);
         this.setTitle(fTitle.getText());

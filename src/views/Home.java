@@ -39,6 +39,7 @@ import models.Book;
 import models.enums.Category;
 import models.enums.Genre;
 import models.enums.SearchType;
+import models.Person;
 
 /**
  *
@@ -48,12 +49,15 @@ public class Home extends JFrame{
     JTextField frameTitle = new JTextField("Home");
     Access accessController = new Access();
     BookController bookController = new BookController();
+    Person currentUser;
+
     public Home (){
+        currentUser = SingletonManager.getInstance().getPerson();
         this.setLayout(new GridLayout(0,1,2,0));
         JMenuBar menuBar = new JMenuBar();
         if(SingletonManager.getInstance().getPerson()==null){
             JMenu menuLogin = new JMenu();
-            menuLogin.setText("Login");
+            menuLogin.setText("Login / Register");
             menuLogin.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
@@ -74,6 +78,9 @@ public class Home extends JFrame{
                 }
             });
             menuBar.add(menuLogout);
+            // Menu User Profile 
+
+            // Menu Admin
             if(SingletonManager.getInstance().getPerson() instanceof Admin) {
                 JMenu menuManageUser = new JMenu();
                 menuManageUser.setText("Manage Users");
@@ -96,6 +103,17 @@ public class Home extends JFrame{
                     }
                 });
                 menuBar.add(menuManageBook);
+            } else{
+                JMenu menuProfile = new JMenu();
+                menuProfile.setText("Profile");
+                menuProfile.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    new GUIUserProfile(currentUser);
+                    Home.this.dispose();
+                }
+            });
+            menuBar.add(menuProfile);
             }
         }
         JPanel booksSectionPanel = new JPanel();
