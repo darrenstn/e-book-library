@@ -1,6 +1,6 @@
 package views;
 
-import controllers.Profile;
+import controllers.ProfileController;
 import models.Person;
 import models.User;
 
@@ -30,7 +30,7 @@ public class GUIUserProfile {
     private JButton btnedit;
     private JButton save;
     private JButton back;
-    private Profile profile;
+    private ProfileController profile;
     private Person currentUser;
     private String userName;
     private String newPicPath;
@@ -109,7 +109,7 @@ public class GUIUserProfile {
         editImage.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Profile profile = new Profile();
+                ProfileController profile = new ProfileController();
                 newPicPath = profile.uploadFile(userName);                
                 ImageIcon newIcon = new ImageIcon(newPicPath);
                 Image newImage = newIcon.getImage().getScaledInstance(150, 150, Image.SCALE_SMOOTH);
@@ -143,7 +143,7 @@ public class GUIUserProfile {
             @Override
             public void actionPerformed(ActionEvent e) {
                 frame.dispose();
-                new Home();
+                new GUIHome();
             }
         });
         panel.add(back, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 560, -1, -1));
@@ -151,7 +151,7 @@ public class GUIUserProfile {
         frame.add(panel);
         frame.setVisible(true);
 
-        profile = new Profile();
+        profile = new ProfileController();
 
         // Memanggil metode populateFields() saat GUIUserProfile dibuat
         populateFields();
@@ -178,8 +178,7 @@ public class GUIUserProfile {
         editImage.setEnabled(true);
     }
 
-    private void updateProfile() {
-        // Mengambil nilai dari bidang-bidang profil yang telah diubah
+    private void updateProfile() {        
         currentUser.setName(fieldNama.getText());
         currentUser.setEmail(fieldEmail.getText());
         currentUser.setPhone(fieldNotelp.getText());

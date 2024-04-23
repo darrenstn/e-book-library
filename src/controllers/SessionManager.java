@@ -10,17 +10,17 @@ import models.Person;
  *
  * @author Darren
  */
-public class SingletonManager {
+public class SessionManager {
     
-    private static SingletonManager instance;
+    private static SessionManager instance;
     private Person person;
     
-    private SingletonManager() {
+    private SessionManager() {
     }
 
-    public static SingletonManager getInstance() {
+    public static SessionManager getInstance() {
         if (instance == null) {
-            instance = new SingletonManager();
+            instance = new SessionManager();
         }
         return instance;
     }

@@ -12,7 +12,7 @@ import models.Person;
 import models.User;
 
 
-public class Access {
+public class AccessController {
     public void login(String name, String password) {
         DatabaseHandler.getInstance().connect();
         String query = "SELECT * FROM person WHERE name='" + name + "' AND password='" + password + "'";
@@ -42,10 +42,10 @@ public class Access {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        SingletonManager.getInstance().setPerson(person);
+        SessionManager.getInstance().setPerson(person);
     }
     
     public void logoff(){
-        SingletonManager.getInstance().setPerson(null);
+        SessionManager.getInstance().setPerson(null);
     }
 }

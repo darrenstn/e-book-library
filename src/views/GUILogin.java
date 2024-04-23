@@ -4,8 +4,8 @@
  */
 package views;
 
-import controllers.Access;
-import controllers.SingletonManager;
+import controllers.AccessController;
+import controllers.SessionManager;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -18,12 +18,12 @@ import javax.swing.JTextField;
 import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 
 
-public class Login extends JFrame{
+public class GUILogin extends JFrame{
     JTextField fTitle = new JTextField("Login");
-    Access accessController = new Access();
+    AccessController accessController = new AccessController();
     String name;
     String password;
-    public Login(){
+    public GUILogin(){
         JPanel panelLogin = new JPanel();
         GridLayout gl = new GridLayout(0,1,2,2);
         panelLogin.setLayout(gl);
@@ -42,9 +42,9 @@ public class Login extends JFrame{
                 name = nameLogin.getText();
                 password = passwordLogin.getText();
                 accessController.login(name, password);
-                if (SingletonManager.getInstance().getPerson()!=null) {
-                    new Home();
-                    Login.this.dispose();
+                if (SessionManager.getInstance().getPerson()!=null) {
+                    new GUIHome();
+                    GUILogin.this.dispose();
                 } else {
                     JOptionPane.showMessageDialog(null, "Gagal Login", "Error", JOptionPane.PLAIN_MESSAGE);
                 }
@@ -54,16 +54,16 @@ public class Login extends JFrame{
         register.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-               new UserRegistrationGUI();
-               Login.this.dispose();
+               new GUIUserRegistration();
+               GUILogin.this.dispose();
             }
         });
 
         backToHome.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-               new Home();
-               Login.this.dispose();
+               new GUIHome();
+               GUILogin.this.dispose();
             }
         });
 

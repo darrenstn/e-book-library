@@ -14,7 +14,7 @@ import models.User;
  *
  * @author Darren
  */
-public class Register {
+public class RegisterController {
     
     public boolean registerNewUser(User user) {
         if(checkIfNameAvailable(user.getName())) { return false; }

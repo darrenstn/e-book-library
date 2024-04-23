@@ -5,7 +5,7 @@
 package views;
 
 import controllers.BookController;
-import controllers.SingletonManager;
+import controllers.SessionManager;
 import java.awt.GridLayout;
 import java.util.ArrayList;
 import javax.swing.JButton;
@@ -20,17 +20,17 @@ import models.Admin;
 import models.Book;
 
 
-public class ManageBook extends JFrame{
+public class GUIManageBook extends JFrame{
 JTextField frameTitle = new JTextField("Manage Books");
     BookController bookController = new BookController();
-    public ManageBook(){
+    public GUIManageBook(){
         this.setLayout(new GridLayout(0,1,2,2));
         JPanel headerPanel = new JPanel();
         JLabel manageLabel = new JLabel("Manage Books");
         manageLabel.setFont(new java.awt.Font("Bookman Old Style", 1, 72));
         headerPanel.add(manageLabel);
         this.add(headerPanel);
-        if ((SingletonManager.getInstance().getPerson() instanceof Admin)) {
+        if ((SessionManager.getInstance().getPerson() instanceof Admin)) {
             JPanel booksPanel = new JPanel();
             booksPanel.setLayout(new GridLayout(0,1,10,10));
             ArrayList<Book> books = bookController.getAllBooks();
@@ -45,12 +45,12 @@ JTextField frameTitle = new JTextField("Manage Books");
         }
         JButton addBookBtn = new JButton("Add Book");
         addBookBtn.addActionListener(e -> {
-            new AddBook();
+            new GUIAddBook();
         });
         this.add(addBookBtn);
         JButton homeBtn = new JButton("Back to Home");
         homeBtn.addActionListener(e -> {
-            new Home();
+            new GUIHome();
             this.dispose();
         });
         this.add(homeBtn);

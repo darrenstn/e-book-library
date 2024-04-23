@@ -3,8 +3,8 @@ import models.*;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-import controllers.Profile;
-import controllers.Register;
+import controllers.ProfileController;
+import controllers.RegisterController;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -17,7 +17,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 
-public class UserRegistrationGUI {
+public class GUIUserRegistration {
 
     private JTextField nameField, emailField, phoneField, bioField, passwordField;    
     private JButton registerButton;
@@ -25,7 +25,7 @@ public class UserRegistrationGUI {
     private String pathFoto;
     private String nameUser;
 
-    public UserRegistrationGUI() {
+    public GUIUserRegistration() {
         JFrame frame = new JFrame("User Registration");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(400, 300);
@@ -45,7 +45,7 @@ public class UserRegistrationGUI {
         JButton uploadFoto = new JButton("Upload Foto");
         JButton backToLogin = new JButton("Back to Login");
         String nameUser = nameField.getText();
-        Profile profile = new Profile();
+        ProfileController profile = new ProfileController();
 
         uploadFoto.addActionListener(e -> {            
             pathFoto = profile.uploadFile(nameUser);
@@ -81,10 +81,10 @@ public class UserRegistrationGUI {
 
                 User user = new User(0, password, name, email, phone, pathFoto, bio, 0);
 
-                Register register = new Register();
+                RegisterController register = new RegisterController();
                 if (register.registerNewUser(user)) {
                     statusLabel.setText("User registered successfully!");
-                    new Login();
+                    new GUILogin();
                     frame.dispose();                    
                 } else {
                     statusLabel.setText("Failed to register user!");
@@ -95,7 +95,7 @@ public class UserRegistrationGUI {
         backToLogin.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-               new Login();
+               new GUILogin();
                frame.dispose();               
             }
         });

@@ -23,11 +23,11 @@ import models.enums.Genre;
  *
  * @author marti
  */
-public class AddBook extends JFrame {
+public class GUIAddBook extends JFrame {
 
     private AdminController adminController;
 
-    public AddBook() {
+    public GUIAddBook() {
         adminController = new AdminController();
 
         // Membuat panel baru untuk formulir penambahan buku

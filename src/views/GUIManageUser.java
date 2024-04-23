@@ -5,7 +5,7 @@
 package views;
 
 import controllers.AdminController;
-import controllers.SingletonManager;
+import controllers.SessionManager;
 import java.awt.GridLayout;
 import java.util.ArrayList;
 import javax.swing.JButton;
@@ -20,17 +20,17 @@ import models.Person;
 import models.User;
 
 
-public class ManageUser extends JFrame{
+public class GUIManageUser extends JFrame{
     JTextField frameTitle = new JTextField("Manage Users");
     AdminController adminController = new AdminController();
-    public ManageUser(){
+    public GUIManageUser(){
         this.setLayout(new GridLayout(0,1,2,2));
         JPanel headerPanel = new JPanel();
         JLabel manageLabel = new JLabel("Manage Users");
         manageLabel.setFont(new java.awt.Font("Bookman Old Style", 1, 72));
         headerPanel.add(manageLabel);
         this.add(headerPanel);
-        if ((SingletonManager.getInstance().getPerson() instanceof Admin)) {
+        if ((SessionManager.getInstance().getPerson() instanceof Admin)) {
             JPanel usersPanel = new JPanel();
             usersPanel.setLayout(new GridLayout(0,3,10,10));
             ArrayList<Person> users = adminController.getAllUser();
@@ -41,13 +41,13 @@ public class ManageUser extends JFrame{
                 JButton increaseBtn = new JButton("Warning++");
                 increaseBtn.addActionListener(e -> {
                     adminController.increaseWarning(userTmp.getId());
-                    new ManageUser();
+                    new GUIManageUser();
                     this.dispose();
                 });
                 JButton decreaseBtn = new JButton("Warning--");
                 decreaseBtn.addActionListener(e -> {
                     adminController.decreaseWarning(userTmp.getId());
-                    new ManageUser();
+                    new GUIManageUser();
                     this.dispose();
                 });
                 usersPanel.add(userLabel);
@@ -60,7 +60,7 @@ public class ManageUser extends JFrame{
         }
         JButton homeBtn = new JButton("Back to Home");
         homeBtn.addActionListener(e -> {
-            new Home();
+            new GUIHome();
             this.dispose();
         });
         this.add(homeBtn);

@@ -4,9 +4,9 @@
  */
 package views;
 
-import controllers.Access;
+import controllers.AccessController;
 import controllers.BookController;
-import controllers.SingletonManager;
+import controllers.SessionManager;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -42,24 +42,24 @@ import models.enums.SearchType;
 import models.Person;
 
 
-public class Home extends JFrame{
+public class GUIHome extends JFrame{
     JTextField frameTitle = new JTextField("Home");
-    Access accessController = new Access();
+    AccessController accessController = new AccessController();
     BookController bookController = new BookController();
     Person currentUser;
 
-    public Home (){
-        currentUser = SingletonManager.getInstance().getPerson();
+    public GUIHome (){
+        currentUser = SessionManager.getInstance().getPerson();
         this.setLayout(new GridLayout(0,1,2,0));
         JMenuBar menuBar = new JMenuBar();
-        if(SingletonManager.getInstance().getPerson()==null){
+        if(SessionManager.getInstance().getPerson()==null){
             JMenu menuLogin = new JMenu();
             menuLogin.setText("Login / Register");
             menuLogin.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
-                    new Login();
-                    Home.this.dispose();
+                    new GUILogin();
+                    GUIHome.this.dispose();
                 }
             });
             menuBar.add(menuLogin);
@@ -70,22 +70,22 @@ public class Home extends JFrame{
                 @Override
                 public void mouseClicked(MouseEvent e) {
                     accessController.logoff();
-                    new Home();
-                    Home.this.dispose();
+                    new GUIHome();
+                    GUIHome.this.dispose();
                 }
             });
             menuBar.add(menuLogout);
             // Menu User Profile 
 
             // Menu Admin
-            if(SingletonManager.getInstance().getPerson() instanceof Admin) {
+            if(SessionManager.getInstance().getPerson() instanceof Admin) {
                 JMenu menuManageUser = new JMenu();
                 menuManageUser.setText("Manage Users");
                 menuManageUser.addMouseListener(new MouseAdapter() {
                     @Override
                     public void mouseClicked(MouseEvent e) {
-                        new ManageUser();
-                        Home.this.dispose();
+                        new GUIManageUser();
+                        GUIHome.this.dispose();
                     }
                 });
                 menuBar.add(menuManageUser);
@@ -95,8 +95,8 @@ public class Home extends JFrame{
                 menuManageBook.addMouseListener(new MouseAdapter() {
                     @Override
                     public void mouseClicked(MouseEvent e) {
-                        new ManageBook();
-                        Home.this.dispose();
+                        new GUIManageBook();
+                        GUIHome.this.dispose();
                     }
                 });
                 menuBar.add(menuManageBook);
@@ -107,7 +107,7 @@ public class Home extends JFrame{
                 @Override
                 public void mouseClicked(MouseEvent e) {
                     new GUIUserProfile(currentUser);
-                    Home.this.dispose();
+                    GUIHome.this.dispose();
                 }
             });
             menuBar.add(menuProfile);
@@ -156,7 +156,7 @@ public class Home extends JFrame{
                 @Override
                 public void mouseClicked(MouseEvent e) {
                     System.out.println("Mouse clicked (# of clicks: " + e.getClickCount() + ")" + e);
-                    new ShowBookDetail(bookController.searchBook(bookTmp.getIsbn()));
+                    new GUIShowBookDetail(bookController.searchBook(bookTmp.getIsbn()));
                 }
             });
             booksPanel.add(imgIcon);
@@ -192,7 +192,7 @@ public class Home extends JFrame{
                             @Override
                             public void mouseClicked(MouseEvent e) {
                                 System.out.println("Mouse clicked (# of clicks: " + e.getClickCount() + ")" + e);
-                                new ShowBookDetail(bookController.searchBook(bookTmp.getIsbn()));
+                                new GUIShowBookDetail(bookController.searchBook(bookTmp.getIsbn()));
                             }
                         });
                         booksPanel.add(imgIcon);
@@ -209,7 +209,7 @@ public class Home extends JFrame{
                             @Override
                             public void mouseClicked(MouseEvent e) {
                                 System.out.println("Mouse clicked (# of clicks: " + e.getClickCount() + ")" + e);
-                                new ShowBookDetail(bookController.searchBook(bookTmp.getIsbn()));
+                                new GUIShowBookDetail(bookController.searchBook(bookTmp.getIsbn()));
                             }
                         });
                         booksPanel.add(imgIcon);

@@ -5,7 +5,7 @@
 package views;
 
 import controllers.BookController;
-import controllers.SingletonManager;
+import controllers.SessionManager;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -32,12 +32,12 @@ import models.Book;
 import models.Review;
 import models.User;
 
-public class ShowBookDetail extends JFrame {
+public class GUIShowBookDetail extends JFrame {
     
     private final JTextField fTitle = new JTextField("Book Detail");
     private final BookController bookController = new BookController();
     
-    public ShowBookDetail(Book book) {
+    public GUIShowBookDetail(Book book) {
         JPanel bookPanel = new JPanel();
         bookPanel.setLayout(new GridBagLayout());
 
@@ -69,10 +69,10 @@ public class ShowBookDetail extends JFrame {
         gbc.gridy++;
         bookPanel.add(authorLabel, gbc);
 
-        if (SingletonManager.getInstance().getPerson() != null) {
-            if (SingletonManager.getInstance().getPerson() instanceof User) {
+        if (SessionManager.getInstance().getPerson() != null) {
+            if (SessionManager.getInstance().getPerson() instanceof User) {
                 BookController bc = new BookController();
-                User userSession = ((User) SingletonManager.getInstance().getPerson());
+                User userSession = ((User) SessionManager.getInstance().getPerson());
                 if (bc.ableToBorrow(book, userSession)) {
                     JButton borrow = new JButton("Borrow");
                     borrow.addActionListener(new ActionListener() {
@@ -80,7 +80,7 @@ public class ShowBookDetail extends JFrame {
                         public void actionPerformed(ActionEvent e) {
                             if (bc.borrowBook(book, userSession)) {
                                 JOptionPane.showMessageDialog(null, "Berhasil Meminjam", "Success", JOptionPane.PLAIN_MESSAGE);
-                                new ShowBookDetail(book);
+                                new GUIShowBookDetail(book);
                                 dispose();
                             } else {
                                 JOptionPane.showMessageDialog(null, "Gagal Meminjam", "Error", JOptionPane.PLAIN_MESSAGE);
@@ -96,7 +96,7 @@ public class ShowBookDetail extends JFrame {
                         public void actionPerformed(ActionEvent e) {
                             if (bc.addBookQueue(book, userSession)) {
                                 JOptionPane.showMessageDialog(null, "Berhasil Mengantri", "Success", JOptionPane.PLAIN_MESSAGE);
-                                new ShowBookDetail(book);
+                                new GUIShowBookDetail(book);
                                 dispose();
                             } else {
                                 JOptionPane.showMessageDialog(null, "Gagal Meminjam", "Error", JOptionPane.PLAIN_MESSAGE);
@@ -113,7 +113,7 @@ public class ShowBookDetail extends JFrame {
                             public void actionPerformed(ActionEvent e) {
                                 if (bc.returnBook(bc.getBorrowedBook(book, userSession))) {
                                     JOptionPane.showMessageDialog(null, "Berhasil Mengembalikan Buku", "Success", JOptionPane.PLAIN_MESSAGE);
-                                    new ShowBookDetail(book);
+                                    new GUIShowBookDetail(book);
                                     dispose();
                                 } else {
                                     JOptionPane.showMessageDialog(null, "Gagal Mengembalikan Buku", "Error", JOptionPane.PLAIN_MESSAGE);
@@ -172,7 +172,7 @@ public class ShowBookDetail extends JFrame {
                                 if (success) {
                                     JOptionPane.showMessageDialog(null, "Review added successfully", "Success", JOptionPane.PLAIN_MESSAGE);
                                     // Perbarui tampilan detail buku untuk menampilkan review yang baru ditambahkan
-                                    new ShowBookDetail(book);
+                                    new GUIShowBookDetail(book);
                                     dispose();
                                 } else {
                                     JOptionPane.showMessageDialog(null, "Failed to add review", "Error", JOptionPane.ERROR_MESSAGE);

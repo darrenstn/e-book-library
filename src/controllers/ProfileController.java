@@ -17,7 +17,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import models.Person;
 import models.User;
 
-public class Profile {
+public class ProfileController {
     
     public void seeProfile(String name) {
         DatabaseHandler.getInstance().connect();

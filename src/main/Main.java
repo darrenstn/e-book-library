@@ -3,10 +3,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Main.java to edit this template
  */
 package main;
-import controllers.Access;
+import controllers.AccessController;
 import controllers.AdminController;
 import controllers.BookController;
-import controllers.SingletonManager;
+import controllers.SessionManager;
 import java.time.LocalDateTime;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -20,7 +20,7 @@ import models.enums.Genre;
 import models.enums.SearchType;
 import models.Person;
 import models.User;
-import views.Home;
+import views.GUIHome;
 
 /**
  *
@@ -29,7 +29,7 @@ import views.Home;
 public class Main {
 
     public static void main(String[] args) {
-        new Home();
+        new GUIHome();
     }
     
 }

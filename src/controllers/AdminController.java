@@ -20,7 +20,7 @@ import models.User;
  */
 public class AdminController {
     public ArrayList<Person> getAllUser() {
-        if (!(SingletonManager.getInstance().getPerson() instanceof Admin)) {return null;}
+        if (!(SessionManager.getInstance().getPerson() instanceof Admin)) {return null;}
         DatabaseHandler.getInstance().connect();
         String query = "SELECT * FROM person p JOIN user u ON p.id = u.id WHERE p.id IN (SELECT id FROM `user`);";
         ArrayList<Person> result = new ArrayList<>();
@@ -37,7 +37,7 @@ public class AdminController {
     }
     
     public boolean increaseWarning(int idUser) {
-        if (!(SingletonManager.getInstance().getPerson() instanceof Admin)) {return false;}
+        if (!(SessionManager.getInstance().getPerson() instanceof Admin)) {return false;}
         DatabaseHandler.getInstance().connect();
         String query = "SELECT warning FROM user WHERE id=" + idUser + ";";
         try {
@@ -59,7 +59,7 @@ public class AdminController {
     }
     
     public boolean decreaseWarning(int idUser) {
-        if (!(SingletonManager.getInstance().getPerson() instanceof Admin)) {return false;}
+        if (!(SessionManager.getInstance().getPerson() instanceof Admin)) {return false;}
         DatabaseHandler.getInstance().connect();
         String query = "SELECT warning FROM user WHERE id=" + idUser + ";";
         try {
@@ -81,7 +81,7 @@ public class AdminController {
     }
     
     public boolean addBook(Book book) {
-        if (!(SingletonManager.getInstance().getPerson() instanceof Admin)) {return false;}
+        if (!(SessionManager.getInstance().getPerson() instanceof Admin)) {return false;}
         DatabaseHandler.getInstance().connect();
         String query = "INSERT INTO book (isbn, year, title, genre, category, author, stock, pic_path) VALUES(?,?,?,?,?,?,?,?)";
         try {
