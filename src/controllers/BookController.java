@@ -125,6 +125,7 @@ public class BookController {
     }
     //Method getPopularBook untuk mendapatkan 5 buku terbanyak dipinjam
     public ArrayList<Book> getPopularBook(){
+        updateListBorrow();
         DatabaseHandler.getInstance().connect();
         ArrayList<Book> result = new ArrayList<>();
         
