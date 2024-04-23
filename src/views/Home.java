@@ -198,6 +198,7 @@ public class Home extends JFrame{
                         booksPanel.add(imgIcon);
                     }
                     booksPanel.revalidate();
+                    booksPanel.repaint();
                 } else {
                     ArrayList<Book> popularBooks = bookController.getPopularBook();       
                     labelBooks.setText("Popular Now");
@@ -214,6 +215,7 @@ public class Home extends JFrame{
                         booksPanel.add(imgIcon);
                     }
                     booksPanel.revalidate();
+                    booksPanel.repaint();
                 }
             }
         });
